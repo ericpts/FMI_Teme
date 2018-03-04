@@ -1,0 +1,13 @@
+
+
+
+
+int main()
+{
+    int x = 123;
+    printf ("hello, world");
+    int y = x + 1100;
+    float d = 3 * y * x * y;
+    printf ("d is %d", d);
+    return 0;
+}

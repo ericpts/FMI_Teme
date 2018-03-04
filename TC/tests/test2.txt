@@ -1,0 +1,12 @@
+
+
+
+int main()
+{
+    int x = 123;
+    printf ("hello, world");
+    int y = 100;
+    float d = 3;
+    printf ("d is %d", d);
+    return 0;
+}
