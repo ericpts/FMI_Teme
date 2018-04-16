@@ -15,7 +15,7 @@ sol = MetBisectie(f, 0.5, 1.5, 1e-5);
 x = a:(b-a)/n:b;
 
 plot(x, arrayfun(y1, x));
-hold;
+hold on;
 plot(x, arrayfun(y2, x));
 
 printf("Am gasit %f cu y1() = %f si y2() = %f\n", sol, y1(sol), y2(sol));

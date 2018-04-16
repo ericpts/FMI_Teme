@@ -25,6 +25,6 @@ end % for
 
 plot(x, y);
 
-hold;
+hold on;
 
 plot(xaprox, yaprox, "or");

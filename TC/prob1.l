@@ -6,6 +6,7 @@ ws [ \t\n]+
 alpha [A-Za-z]
 digit [0-9]
 name ({alpha}|[_])({alpha}|{digit}|[_])*
+special_name ab(xyz){3,5}
 string \"[^\n"]+\"
 
 number_int [-+]?{digit}+
@@ -153,6 +154,11 @@ void add_token(std::unique_ptr<Token> token)
     float x;
     ss >> x;
     add_token(Token_Number_Float::make(x));
+}
+
+{special_name} {
+    g_lineno = yylineno;
+    add_token(Token_SpecialName::make(yytext));
 }
 
 {name} {

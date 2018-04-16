@@ -1,8 +1,7 @@
-
-
 int main()
 {
     int x = 123;
     printf ("hello, world");
+    int abxyzxyzxyz = 555;
     return 0;
 }

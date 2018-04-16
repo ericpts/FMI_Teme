@@ -1,4 +1,5 @@
 #include <string>
+#include <memory>
 
 #include "util.h"
 
@@ -9,6 +10,7 @@ enum class TokenType
     Number_Float,
     String,
     Name,
+    SpecialName,
 
 
     // Data types.
@@ -46,8 +48,6 @@ enum class TokenType
 
     // Comments.
     Comment,
-
-
 };
 
 int g_lineno = 0;
@@ -132,6 +132,26 @@ struct Token_String : public Token
     std::string to_string() const
     {
         return sformatf("Token_String(%s) @ %d", m_data.c_str(), m_line);
+    }
+};
+
+struct Token_SpecialName : public Token
+{
+    std::string m_data;
+
+    Token_SpecialName(std::string data):
+        Token(TokenType::SpecialName),
+        m_data(data)
+    { }
+
+    static std::unique_ptr<Token> make(std::string data)
+    {
+        return std::make_unique<Token_SpecialName>(data);
+    }
+
+    std::string to_string() const
+    {
+        return sformatf("Token_SpecialName(%s) @ %d", m_data.c_str(), m_line);
     }
 };
 
