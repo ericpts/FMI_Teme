@@ -41,7 +41,7 @@ l = 2 / norm(A, inf);
 
 steps=10;
 [x_aprox, N, sigma, V] = MetJacobiRO(A, a, eps, steps, l);
-plot((1:steps) * 1/steps * l, V, 'or');
+plot((1:steps) * 1/steps * l, V, 'r+');
 
 steps=20;
 [x_aprox, N, sigma, V] = MetJacobiRO(A, a, eps, steps, l);
@@ -50,7 +50,7 @@ plot((1:steps) * 1/steps * l, V, 'bo');
 
 steps=50;
 [x_aprox, N, sigma, V] = MetJacobiRO(A, a, eps, steps, l);
-plot((1:steps) * 1/steps * l, V, 'go');
+plot((1:steps) * 1/steps * l, V, 'gx');
 
 legend("10 intervale", "20 intervale", "50 intervale");
 xlabel("sigma");
@@ -65,7 +65,7 @@ l = 2 / max(abs(eigs(A)));
 
 steps=10;
 [x_aprox, N, sigma, V] = MetJacobiRO(A, a, eps, steps, l);
-plot((1:steps) * 1/steps * l, V, 'or');
+plot((1:steps) * 1/steps * l, V, 'r+');
 
 steps=20;
 [x_aprox, N, sigma, V] = MetJacobiRO(A, a, eps, steps, l);
@@ -73,13 +73,13 @@ plot((1:steps) * 1/steps * l, V, 'bo');
 
 steps=50;
 [x_aprox, N, sigma, V] = MetJacobiRO(A, a, eps, steps, l);
-plot((1:steps) * 1/steps * l, V, 'go');
+plot((1:steps) * 1/steps * l, V, 'gx');
 
 legend("10 intervale", "20 intervale", "50 intervale");
 xlabel("sigma");
 ylabel("niter");
 
-title("Met Jacobi, 2 / Rază spectrală");
+title("Met Jacobi, 2 / Raza spectrala");
 % nu merge pentru că sigma > 2 / normă
 
 % 4
@@ -96,7 +96,7 @@ l = 2 / norm(A, inf);
 
 steps=10;
 [x_aprox, N, sigma, V] = MetGaussSeidelRO(A, a, eps, steps, l);
-plot((1:steps) * 1/steps * l, V, 'or');
+plot((1:steps) * 1/steps * l, V, 'r+');
 
 steps=20;
 [x_aprox, N, sigma, V] = MetGaussSeidelRO(A, a, eps, steps, l);
@@ -104,13 +104,13 @@ plot((1:steps) * 1/steps * l, V, 'bo');
 
 steps=50;
 [x_aprox, N, sigma, V] = MetGaussSeidelRO(A, a, eps, steps, l);
-plot((1:steps) * 1/steps * l, V, 'go');
+plot((1:steps) * 1/steps * l, V, 'gx');
 
 legend("10 intervale", "20 intervale", "50 intervale");
 xlabel("sigma");
 ylabel("niter");
 
-title("Met Gauss Seidel, 2 / Normă");
+title("Met Gauss Seidel, 2 / Norma");
 
 % Raza spectrala.
 figure;
@@ -120,7 +120,7 @@ l = 2 / max(abs(eigs(A)));
 
 steps=10;
 [x_aprox, N, sigma, V] = MetGaussSeidelRO(A, a, eps, steps, l);
-plot((1:steps) * 1/steps * l, V, 'or');
+plot((1:steps) * 1/steps * l, V, 'r+');
 
 steps=20;
 [x_aprox, N, sigma, V] = MetGaussSeidelRO(A, a, eps, steps, l);
@@ -128,13 +128,13 @@ plot((1:steps) * 1/steps * l, V, 'bo');
 
 steps=50;
 [x_aprox, N, sigma, V] = MetGaussSeidelRO(A, a, eps, steps, l);
-plot((1:steps) * 1/steps * l, V, 'go');
+plot((1:steps) * 1/steps * l, V, 'gx');
 
 legend("10 intervale", "20 intervale", "50 intervale");
 xlabel("sigma");
 ylabel("niter");
 
-title("Met Gauss Seidel, 2 / Rază spectrală");
+title("Met Gauss Seidel, 2 / Raza spectrala");
 % Merge pentru că sigma < 2.
 
 [x_aprox, N] = MetGaussSeidelRO(A, a, eps, 50);
