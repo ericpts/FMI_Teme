@@ -4,9 +4,8 @@ use std::fs::File;
 use std::io::Read;
 use ndarray::prelude::*;
 
-
-type Terminal = char;
-type Nonterminal = char;
+type Terminal = u8;
+type Nonterminal = u8;
 
 #[derive(Debug)]
 enum Rule {
@@ -20,10 +19,10 @@ enum Rule {
     },
 }
 
-fn char_to_i32(c: char) -> i32 {
+fn char_to<T: From<u8>>(c: &char) -> T {
     let mut buf = [0; 4];
     let r = c.encode_utf8(&mut buf);
-    r.bytes().next().expect("failed to parse src") as i32
+    T::from(r.bytes().next().expect("failed to parse src"))
 }
 
 impl Rule {
@@ -34,7 +33,7 @@ impl Rule {
 
         macro_rules! err {
             ($e:expr) => {
-                return Err(format!("rule must look like S -> AB or S -> a: {}", $e));
+                return Err(format!("{}!\n Rule must look like S -> AB or S -> a", $e));
             }
         }
 
@@ -53,21 +52,25 @@ impl Rule {
                 err!("dest is terminal but not lowercase");
             }
             return Ok(Rule::Terminal {
-                src: src,
-                dst: dst,
+                src: char_to::<Nonterminal>(&src),
+                dst: char_to::<Terminal>(&dst),
             });
         }
 
         if dst_vec.len() == 2 {
             for d in &dst_vec {
                 if !d.is_uppercase() {
-                    err!("dest is nontermianl but not uppercase");
+                    err!("dest is nonterminal but not uppercase");
                 }
             }
 
-            let dst = [dst_vec[0], dst_vec[1]];
+            let dst: [Nonterminal; 2] = [
+                char_to::<Nonterminal>(&dst_vec[0]),
+                char_to::<Nonterminal>(&dst_vec[1]),
+            ];
+
             return Ok(Rule::Nonterminal {
-                src: src,
+                src: char_to::<Nonterminal>(&src),
                 dst: dst,
             });
         }
@@ -75,12 +78,12 @@ impl Rule {
         err!("dest has invalid length (not 1 nor 2)");
     }
 
-    fn src(&self) -> i32 {
+    fn src(&self) -> u8 {
         let src = match self {
             &Rule::Nonterminal{src, ..} => src,
             &Rule::Terminal{src, ..} => src,
         };
-        char_to_i32(src)
+        src
     }
 
     fn is_terminal(&self) -> bool {
@@ -93,27 +96,36 @@ impl Rule {
     fn is_nonterminal(&self) -> bool {
         return !self.is_terminal();
     }
+
+    fn terminal(&self) -> Result<u8, String> {
+        match self {
+            &Rule::Nonterminal{..} => Err(String::from("rule is nonterminal")),
+            &Rule::Terminal{dst, ..} => Ok(dst),
+        }
+    }
 }
 
-fn build_matrix(rules: &Vec<Rule>, target: &str) {
+fn build_matrix(rules: &Vec<Rule>, target: &Vec<Terminal>) {
     /// Tries to generate string target from the given rules.
     ///
     /// Returns the Nonterminals that you can start with and reach the target,
     /// together with the matrix itself.
 
-    // DP[i][j][k] = is it possible to generate the substring [i..j] of `target`, starting from
+    // dp[i][j][k] = is it possible to generate the substring [i..j] of `target`, starting from
     // nonterminal `k?`
     let n = target.len();
     let s = 255;
 
-    let terminals: Vec<i32> = rules.iter().map(|rule| rule.src()).collect();
+    let terminals: Vec<u8> = rules.iter().map(|rule| rule.src()).collect();
 
-    let mut DP = Array3::<bool>::default((n, n, s));
+    let mut dp = Array3::<bool>::default((n, n, s));
 
     for r in rules.iter().filter(|rule| rule.is_terminal()) {
         for i in 0..n {
-            if target[i] == r.
-            DP[i][i][r.src()]
+            if target[i] != r.terminal().unwrap() {
+                continue;
+            }
+            dp[[i, i, r.src() as usize]] = true;
         }
     }
 
