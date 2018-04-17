@@ -1,0 +1,7 @@
+[package]
+name = "tema2"
+version = "0.1.0"
+authors = ["Eric Stavarache <ericptst@gmail.com>"]
+
+[dependencies]
+ndarray = "0.11.0"
